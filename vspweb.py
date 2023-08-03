@@ -108,8 +108,9 @@
 
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
+import plotly.graph_objects as go 
 from PIL import Image as img
+
 
 def pageinfo():
     st.set_page_config(page_title="VSP | RINL | DA Project", 
@@ -120,24 +121,30 @@ def pageinfo():
                     menu_items=None)
 
 def header():
-    # col1, col2=st.columns(2)
-    # with col1:
-    logo=('https://www.vizagsteel.com/photos/logonew.jpg')
-    # with col2:    
-    st.image(logo,width=150)
-    st.markdown("<h1 style='color:green; text-align:center;'>Visakapatnam Steel Plant</h1><br>",unsafe_allow_html=True)
+    col1, col2=st.columns([1,5])
+    with col1:
+        logo=('https://www.vizagsteel.com/photos/logonew.jpg')
+        st.image(logo,width=150)
+    with col2:    
+        st.markdown("<h1 style='color:green; text-align:center;'>Visakapatnam Steel Plant</h1>",unsafe_allow_html=True)
+        st.markdown("<h1 style='color:silver; text-align:center;'>Rashtriya Ipsath Nigam Limited</h1><br>",unsafe_allow_html=True)
+    st.markdown("#")
     st.markdown("<h3 style='color:gold; text-align:center;'>LEVERAGING DATA   ANALYTICS TO OPTIMIZE MATERIAL CONSUMPTION" 
             " IN A VIZAG STEEL PLANT</h3>",unsafe_allow_html=True)
 def sidemenu():
+    # sm1,sm2=st.sidebar.columns([1,3])
+    # with sm1:
     logo=('https://www.vizagsteel.com/photos/logonew.jpg')
     st.sidebar.image(logo,width=30)
-    st.sidebar.title("Visakapatnam Steel Plant")
+    # with sm2:
+    st.sidebar.title(":green[Visakapatnam Steel Plant]")
     st.sidebar.subheader("Rastriya Ispat Nigam Limited")
+    
+    
     uf=st.sidebar.file_uploader("Upload Your Custom CSV File",type="csv")
     
     st.sidebar.markdown("")
     st.sidebar.write("# :green[Elements for Comparison:]")
-    
     st.sidebar.write("#### Upload Your file above to Compare (or)")
         # if st.sidebar.radio("Select here to Choose your file",["name"]):
 
@@ -146,11 +153,14 @@ def sidemenu():
         st.markdown("<h4 style='color:red; text-align:center;'>Upload your custom CSV file (or) Please Select any Month and any Two(2) Colums for Comparison  </h4><br>",unsafe_allow_html=True)
     if month=="Custom File Comparison":
         if uf is not None:
-            st.sidebar.success(uf)
+            nm="Custom File: "+uf.name
+            st.sidebar.success(nm)
             cf=pd.read_csv(uf)
-            columns(cf,"Custom File")
+            columns(cf,uf.name)
         else:
-            st.warning("Please upload your own which you want to plot comaprison at Side menu")
+            st.warning("Please upload your own CSV file at Side menu which you want to make  plot comaprison ")
+            # uf=st.sidebar.file_uploader("Upload Your Custom CSV File",type="csv",label_visibility="hidden")
+
         
     
     if month=="July":
@@ -172,12 +182,12 @@ def sidemenu():
 
 def columns(data,month):
     # x1=(xcols(data))
-    st.sidebar.markdown(":blue[Select any One value to Comapre with Y]")
+    st.sidebar.markdown(":blue[Select any One value to Comapre with :green[Y]]")
     column_headers = data.columns.tolist()
     selected_column = st.sidebar.radio("Select a column", column_headers,key="xcol")
     x1=(data[selected_column])
     # y1=(ycols(data))    
-    st.sidebar.markdown(":blue[Select any One value to Comapre with X]")
+    st.sidebar.markdown(":blue[Select any One value to Comapre with :green[{}]]".format(selected_column))
     column_headers = data.columns.tolist()
     selected_column = st.sidebar.radio("Select a column", column_headers,key="ycol")
     y1=(data[selected_column])
@@ -185,7 +195,8 @@ def columns(data,month):
     body(x1,y1,month)
 
 def ploting(x1,y1,month):
-    st.header(" Showing Production Graph of: :blue[{}]".format(month) )
+    st.header(" Showing Comparison Plotting Graph of: :blue[{}]".format(month) )
+    # st.header(" X-axis:blue[{}]".format(x1) )
     fig =go.Figure()
     fig.add_trace(go.Bar(x=x1,y=y1)) 
     # st.success(x1)
@@ -201,8 +212,10 @@ def body(x1,y1,month):
     else:
         st.markdown("<h4 style='color:red; text-align:center;'>Upload your custom CSV file (or) Please Select any Month and any Two(2) Colums for Comparison  </h4><br>",unsafe_allow_html=True)
 
+
 def main():
     pageinfo()
     header()
     sidemenu()
+
 main()
