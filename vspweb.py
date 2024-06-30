@@ -174,7 +174,7 @@ def sidemenu():
 
     # st.markdown("<img src='21VV5A1268.jpg' alt='Me' height='150' widht='150'>", unsafe_allow_html=True)
     st.sidebar.markdown(":blue[Project Done by-]")
-    dp=("https://dannanasaiajithkumar.vercel.app/Images/SBProfile.jpg")
+    dp=("https://github.com/dsak789/Dannana-Sai-Ajith-Kumar/blob/main/old%20folio/Images/SBProfile.jpg?raw=true")
     st.sidebar.image(dp,width=200)
     st.sidebar.latex("Dannna Sai Ajith Kumar")
     st.sidebar.latex("Trainee-no:100019761")
